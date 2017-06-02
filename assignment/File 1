@@ -1,0 +1,28 @@
+
+Date: Fri, 02 Jun 2017 18:41:16 GMT
+Server: Apache/2.2.22 (Ubuntu)
+Last-Modified: Thu, 01 Jun 2017 19:27:40 GMT
+ETag: "220d23-11c-550eb07b7b48c"
+Accept-Ranges: bytes
+Content-Length: 284
+Vary: Accept-Encoding
+Connection: close
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<meta charset="UTF-8">
+		<title>Becca Rocks!!</title>
+	</head>
+	
+	<body>
+		<div>
+			<p> She is awesome!  </p>
+			<p> Check out this sweet picture of her! </p>
+			<p><img src="selfie.jpg" width="50px" height="50px" /></p>
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,121 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <strings.h>
+#include <string.h>
+
+//struct hostent *gethostbyname(const char *name);
+
+
+int main(int argc, char *argv[]) {
+    
+    //printf("Client programming\n");
+
+    char* servername;
+    int port;
+    int serversockfd;
+    int connection;
+    char buffer[1024];
+    if(argc != 2) {
+        printf("Usage: %s <server> <port>\n", argv[0]);
+        exit(0);
+    }
+
+    port = atoi(argv[1]);
+
+    printf("Port Number: %d\n", port);
+
+    //Create socket    
+    serversockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+    if(serversockfd < 0) {
+        perror("Error opening socket");
+    }
+    
+
+    //Connect to a server
+
+    struct hostent *server_he; //a host address entry
+    
+    /*if ((server_he = gethostbyname(servername)) == NULL) {
+        perror("Error in gethostbyname");
+        return 2;
+    }*/
+
+    //modify here
+    struct sockaddr_in serveraddr;
+    bzero((char*)&serveraddr, sizeof(serveraddr));
+    serveraddr.sin_family = AF_INET;    
+   
+
+    //let the system figure out our IP address
+    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+    //port we will listen in on
+    serveraddr.sin_port = htons(port);
+
+    //Bind socket to the address
+    int optval;
+    setsockopt(serversockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(int));
+    
+    //Bind
+    if(bind(serversockfd, (struct sockaddr *) &serveraddr, sizeof(serveraddr)) < 0) {
+        perror("ERROR on binding");
+        exit(3);
+    }
+
+    if(listen(serversockfd, 5) < 0) {
+        perror("ERROR on listen");
+        exit(1);
+    }
+    printf("Server is listening on port %d\n", port);
+
+    //struct sockaddr_in clientaddr;
+    //accept
+    int childfd;
+
+    //while(1) {
+        struct sockaddr_in clientaddr; //client address
+        //wait to accept a connetion from the client
+        int clientlen = sizeof(clientaddr);
+        childfd = accept(serversockfd, (struct sockaddr*) &clientaddr, (socklen_t*) &clientlen);
+        if(childfd < 0) {
+            perror("ERROR on accept");
+            exit(2);
+        }
+        printf("Server established connection with %s\n", inet_ntoa(clientaddr.sin_addr));
+
+
+    
+
+    //recieve data
+    int byte_received;
+    bzero(buffer, 1024);
+    byte_received = recv(childfd, buffer, 1024, 0);
+    if(byte_received < 0) {
+	perror("ERROR reading from socket");
+	exit(1);
+    }
+    printf("Message received: %s", buffer);
+    
+    //send data
+    char* msg = "Hello Client";
+    int bytes_sent;
+    bytes_sent = send(childfd, msg, strlen(msg), 0);
+    if(bytes_sent > 0) {
+	printf("Message sent to client\n");
+    }
+
+    //}
+    
+    return 0;
+}
+
+
+
+
+
+
