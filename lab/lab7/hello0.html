@@ -21,21 +21,7 @@
 			<input type="submit" value= "Submit!!">
 			</form>
 
-			<script>
-				function validateForm() {
-					var x = document.forms["myForm"]["name"].value;
-					if(x=="") {
-						alert("Name must be filled out");
-						return false;
-					}
-					var regex = /^\w+$/;
-					if(!regex.test(x)) {
-						alert("Username must contain only letters, numbers, and underscores!!");
-						document.forms["myForm"]["name"].focus();
-						return false;
-					}
-				}
-			</script>
+			
 		</div>
 	</body>
 
