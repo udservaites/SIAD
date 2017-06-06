@@ -22,6 +22,12 @@
 						alert("Name must be filled out");
 						return false;
 					}
+					var regex = /^\w+$/;
+					if(!regex.test(name)) {
+						alert("Username must contain only letters, numbers, and underscores!!");
+						document.forms["myForm"]["name"].focus();
+						return false;
+					}
 				}
 			</script>
 		</div>
