@@ -1,0 +1,80 @@
+
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.io.*;
+import java.util.Date;
+
+
+public class MyTCPServer2 {
+
+
+
+
+    public static void main(String[] args) throws IOException {
+
+
+        //Create socket and assigne port number
+        int portNumber = 8000;
+        ServerSocket serverSocket = new ServerSocket(portNumber);
+
+        System.out.println("MyTCPServer is running at port: " + serverSocket.getLocalPort());
+
+        //Client socket. If no error, client connected
+        //Test with telnet or browser
+
+        while(true) {
+            Socket clientSocket = serverSocket.accept();
+            new TCPServerThread(clientSocket).start();
+        }
+
+
+    }
+
+
+}
+
+class TCPServerThread extends Thread {
+
+        private Socket clientSocket = null;
+
+        TCPServerThread(Socket clientSocket) {
+            super("TCPServerThread");
+            this.clientSocket = clientSocket;
+        }
+
+        public void run() {
+            try {
+            //handeling data commmunication here
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            String inputLine = in.readLine();
+            String receivedData = inputLine;
+                while(!inputLine.isEmpty()) {
+                    inputLine = in.readLine();
+                    receivedData += inputLine;
+
+                }
+				//put protocol here for chat funcitonality. Use received data
+
+
+
+            if(receivedData.compareTo("Exit") == 0) {
+                clientSocket.getOutputStream().write("See ya client!".getBytes("UTF-8"));
+                clientSocket.close();
+                System.exit(1);
+            }
+            System.out.println("Data received from client: " + receivedData);
+
+        //Send message to client
+            String response = "MYTCPServer\n" + (new Date()).toString() + "\n" + "You have sent: " + receivedData;
+
+            clientSocket.getOutputStream().write(response.getBytes("UTF-8"));
+            clientSocket.close();
+         } catch (IOException e) {
+            System.err.println("IOEXception");
+
+         }
+
+
+        }
+    }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<meta charset="UTF-8">
+		<title>Becca Rocks!!</title>
+	</head>
+
+	<body>
+		<div>
+			<form name="myForm" action="/cgi-bin/hello.cgi" onsubmit="return validateForm()" method="get">
+			Your name: <input type="text" name="name" size="20">
+			<!--input type="submit" value="Submit!"-->
+			Your password: <input type="password" name="password" size="20">
+			<input type="submit" value= "Submit!!">
+			</form>
+
+			<script>
+				function validateForm() {
+					var x = document.forms["myForm"]["name"].value;
+					if(x=="") {
+						alert("Name must be filled out");
+						return false;
+					}
+				}
+			</script>
+		</div>
+	</body>
+
+</html>
