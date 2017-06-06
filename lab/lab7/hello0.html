@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<meta charset="UTF-8">
+		<title>Becca Rocks!!</title>
+	</head>
+
+	<body>
+		<div>
+			<form name="myForm" action="/cgi-bin/hello.cgi" onsubmit="return validateForm()" method="get">
+			<p>
+				Username: <input type="text" required pattern="\w+" name="username">
+			</p>
+			<p>
+				Password: <input type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6}" name="pwd1" onchange="form.pw2.pattern = this.value;">
+			</p>
+			<p>
+				Confirm Password: <input type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6}" name="pwd2">
+			</p>
+			<input type="submit" value= "Submit!!">
+			</form>
+
+			<script>
+				function validateForm() {
+					var x = document.forms["myForm"]["name"].value;
+					if(x=="") {
+						alert("Name must be filled out");
+						return false;
+					}
+					var regex = /^\w+$/;
+					if(!regex.test(x)) {
+						alert("Username must contain only letters, numbers, and underscores!!");
+						document.forms["myForm"]["name"].focus();
+						return false;
+					}
+				}
+			</script>
+		</div>
+	</body>
+
+</html>
