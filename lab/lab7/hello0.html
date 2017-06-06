@@ -13,15 +13,15 @@
 				Username: <input type="text" required pattern="\w+" name="username">
 			</p>
 			<p>
-				Password: <input type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6}" name="pwd1" onchange="form.pw2.pattern = this.value;">
+				Password: <input type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd1" onchange="form.pw2.pattern = this.value;">
 			</p>
 			<p>
-				Confirm Password: <input type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6}" name="pwd2">
+				Confirm Password: <input type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd2">
 			</p>
 			<input type="submit" value= "Submit!!">
 			</form>
 
-			
+
 		</div>
 	</body>
 
