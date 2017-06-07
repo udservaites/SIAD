@@ -5,7 +5,7 @@ int main(void) {
   printf("Content-Type: text/html\n"); //you must have two \n to end
   printf("Set cookie: username=php\n\n");
   char* cookie=getenv("HTTP_COOKIE");
-  printf("Hello! Cookie from client=%s", cookie);
+  printf("Hello!");
 
   return 0;
 }
