@@ -1,0 +1,87 @@
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.io.*;
+import java.util.Date;
+import java.util.Scanner;
+
+class TCPClientThread extends Thread {
+	private Socket clientSocket = null;
+
+	TCPClientThread(Socket clientSocket) {
+		super("TCPClientThread");
+		this.clientSocket = clientSocket;
+	}
+
+	public void run() {
+
+		try {
+			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			while (true) {
+				String inputLine = in.readLine();
+				while ((inputLine != null) && !inputLine.isEmpty()) {
+					System.out.println("Recieved from client: " + inputLine);
+					inputLine = in.readLine();
+				}
+
+			}
+
+			// clientSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+public class MyTCPClient2 {
+
+	public static void main(String[] args) throws IOException {
+
+		if (args.length != 2) {
+			System.err.println("Usage: java MyTCPClient <host name> <port number>");
+			System.exit(1);
+		}
+
+		System.out.println("MYTCPClient");
+
+		String hostName = args[0];
+		int portNumber = Integer.parseInt(args[1]);
+
+		try {
+			Socket socket = new Socket(hostName, portNumber);
+			System.out.println("Connected to the server: " + hostName + "\' at port " + portNumber);
+			
+			
+
+			// outstream to send data
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+			// inputstream to read data
+			// BufferedReader in = new BufferedReader(new
+			// InputStreamReader(socket.getInputStream()));
+
+			// buffer reader to read from user input
+			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+
+			new TCPClientThread(socket).start();
+			String userInput;
+			// create thread here
+			System.out.println("Please enter your username: ");
+			Scanner s = new Scanner(System.in);
+			String userInput = s.nextLine();
+
+			while ((userInput = stdIn.readLine()) != null) {
+				out.println(userInput);
+				if (userInput.compareTo("Exit") == 0) {
+					socket.close();
+					System.exit(0);
+				}
+				// System.out.println("Received from server: " + in.readLine());
+
+			}
+
+		} catch (IOException e) {
+			System.err.println("COuldn't get I/O for the connection to " + hostName);
+			System.exit(1);
+		}
+	}
+}
